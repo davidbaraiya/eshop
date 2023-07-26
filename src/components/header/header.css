@@ -2,6 +2,7 @@
   position: sticky !important;
   top: 0;
   z-index: 5;
+  box-shadow: 0 0 20px rgb(0 0 0 / 15%) !important;
 }
 
 .navlink {
@@ -26,10 +27,14 @@
   transform: translateX(-50%);
 }
 
-.mobile-links li a.active,
+.mobile-links a.active,
 .header nav ul li a.active,
 .header nav ul li a:hover {
   color: var(--theme-color);
+}
+
+.mobile-links ul {
+  padding-left: 0;
 }
 
 .header nav ul li a:hover:before,
@@ -68,15 +73,16 @@ li.dd-link>span {
 .dd-menu {
   position: absolute !important;
   top: 100%;
-  left: 50%;
+  right: 0;
   width: max-content;
   box-shadow: 0 0 5px 1px rgb(0 0 0 / 10%);
   background-color: #fff;
   opacity: 0;
   transition: all 0.3s ease-in-out;
   z-index: 3;
-  transform: translateY(20px) translateX(-50%);
+  /* transform: translateY(20px) translateX(-50%); */
   text-transform: capitalize;
+  visibility: hidden;
 }
 
 .dd-menu li {
@@ -85,7 +91,8 @@ li.dd-link>span {
 
 li.dd-link:hover .dd-menu {
   opacity: 1;
-  transform: translateY(0) translateX(-50%);
+  transform: translateY(0);
+  visibility: visible;
 }
 
 .mobile-links {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import "./header.css";
 import {
@@ -12,8 +12,8 @@ import {
   Box,
   Drawer,
   Button,
-  Modal,
   Badge,
+  Dialog,
 } from "@mui/material";
 import { Link, NavLink } from "react-router-dom";
 import { CiSearch, CiUser, CiHeart, CiShoppingCart } from "react-icons/ci";
@@ -21,6 +21,28 @@ import { RiMenu3Fill } from "react-icons/ri";
 import { GrClose } from "react-icons/gr";
 import Login from "../form/Login";
 import Register from "../form/Register";
+import {
+  onAuthStateChanged,
+  signOut,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
+import { auth } from "../../firebase/firebase";
+import { toast } from "react-toastify";
+import { motion } from "framer-motion";
+
+const UlContainer = {
+  hidden: { opacity: 1, scale: 0 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      delayChildren: 0.3,
+      staggerChildren: 0.2,
+    },
+  },
+};
 
 const CustomToolbar = styled(Toolbar)`
   background: #fff;
@@ -52,13 +74,47 @@ const navLinks = [
   },
 ];
 
+const googleProvider = new GoogleAuthProvider();
+const facebookProvider = new FacebookAuthProvider();
+
 const Header = () => {
+  const [userIsLogin, setUserIsLogin] = useState(false);
   const [modalOpen, setmodalOpen] = useState({
     registerShow: false,
     loginShow: false,
   });
   const [state, setState] = useState(false);
 
+  const signinWithGoogle = () => {
+    signInWithPopup(auth, googleProvider);
+  };
+  const signinWithFacebook = () => {
+    signInWithPopup(auth, facebookProvider);
+  };
+
+  // is user is login or not
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserIsLogin(true);
+      }
+    });
+    if (userIsLogin) handleClose();
+    return () => unsubscribe();
+  }, [userIsLogin]);
+
+  // log out function
+  const userLogout = async () => {
+    try {
+      await signOut(auth);
+      toast.success("Signout Successfully");
+      setUserIsLogin(false);
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
+  // handle Modal Open
   const handleModalOpen = (text) => {
     if (text === "login") {
       setmodalOpen({ registerShow: false, loginShow: true });
@@ -67,13 +123,14 @@ const Header = () => {
     }
   };
 
-  // const handleModalOpen = () => setmodalOpen(true);
+  // modal close
   const handleClose = () =>
     setmodalOpen({
       registerShow: false,
       loginShow: false,
     });
 
+  // mobile menu handle
   const toggleDrawer = (open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -106,25 +163,6 @@ const Header = () => {
                 <li>
                   <CiSearch />
                 </li>
-                <li className="dd-link">
-                  <span>
-                    <CiUser />
-                  </span>
-                  <List className="dd-menu">
-                    <ListItem>
-                      <ListItemButton onClick={() => handleModalOpen("login")}>
-                        log in
-                      </ListItemButton>
-                    </ListItem>
-                    <ListItem>
-                      <ListItemButton
-                        onClick={() => handleModalOpen("register")}
-                      >
-                        register
-                      </ListItemButton>
-                    </ListItem>
-                  </List>
-                </li>
                 <li>
                   <Badge badgeContent={1} color="primary">
                     <CiHeart />
@@ -134,6 +172,49 @@ const Header = () => {
                   <Badge badgeContent={1} color="primary">
                     <CiShoppingCart />
                   </Badge>
+                </li>
+                <li className="dd-link">
+                  <span>
+                    <CiUser />
+                  </span>
+                  {userIsLogin ? (
+                    <List className="dd-menu">
+                      <ListItem>
+                        <ListItemButton
+                          onClick={() => handleModalOpen("login")}
+                        >
+                          My Profile
+                        </ListItemButton>
+                      </ListItem>
+                      <ListItem>
+                        <ListItemButton onClick={userLogout}>
+                          My Order
+                        </ListItemButton>
+                      </ListItem>
+                      <ListItem>
+                        <ListItemButton onClick={userLogout}>
+                          Sign Out
+                        </ListItemButton>
+                      </ListItem>
+                    </List>
+                  ) : (
+                    <List className="dd-menu">
+                      <ListItem>
+                        <ListItemButton
+                          onClick={() => handleModalOpen("login")}
+                        >
+                          Log In
+                        </ListItemButton>
+                      </ListItem>
+                      <ListItem>
+                        <ListItemButton
+                          onClick={() => handleModalOpen("register")}
+                        >
+                          Register
+                        </ListItemButton>
+                      </ListItem>
+                    </List>
+                  )}
                 </li>
                 <li className="menu-icon">
                   <span onClick={toggleDrawer(true)}>
@@ -161,30 +242,51 @@ const Header = () => {
               <GrClose style={{ fontSize: "24px" }} />
             </Button>
           </div>
-          <List className="mobile-links">
+          <motion.List
+            className="mobile-links"
+            variants={UlContainer}
+            initial="hidden"
+            animate="visible"
+          >
             {navLinks?.map(({ name, path }, i) => (
-              <ListItem disablePadding key={i}>
+              <motion.li
+                key={i}
+                initial={{ x: -30, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ duration: 0.5, delay: i * 0.2 }}
+              >
                 <ListItemButton>
                   <NavLink to={path}>{name}</NavLink>
                 </ListItemButton>
-              </ListItem>
+              </motion.li>
             ))}
-          </List>
+          </motion.List>
         </Box>
       </Drawer>
 
-      {/* Modal */}
       {modalOpen.loginShow || modalOpen.registerShow ? (
-        <Modal
+        <Dialog
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
           open={modalOpen.loginShow || modalOpen.registerShow}
           onClose={handleClose}
         >
           {modalOpen.loginShow ? (
-            <Login handleModalFun={handleModalOpen} />
+            <Login
+              handleModalFun={handleModalOpen}
+              handleClose={handleClose}
+              signinWithGoogle={signinWithGoogle}
+              signinWithFacebook={signinWithFacebook}
+            />
           ) : (
-            <Register handleModalFun={handleModalOpen} />
+            <Register
+              handleModalFun={handleModalOpen}
+              handleClose={handleClose}
+              signinWithGoogle={signinWithGoogle}
+              signinWithFacebook={signinWithFacebook}
+            />
           )}
-        </Modal>
+        </Dialog>
       ) : null}
     </>
   );

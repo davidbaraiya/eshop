@@ -5,6 +5,8 @@ import "./index.css";
 import App from "./App";
 import theme from "./theme";
 import { ThemeProvider } from "@emotion/react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -12,5 +14,10 @@ root.render(
     <ThemeProvider theme={theme}>
       <App />
     </ThemeProvider>
+    <ToastContainer
+      autoClose={1500}
+      pauseOnFocusLoss={false}
+      pauseOnHover={true}
+    />
   </React.StrictMode>
 );

@@ -1,13 +1,11 @@
 import React from "react";
-import Login from "../components/form/Login";
-import Register from "../components/form/Register";
+import HeroBanner from "../components/HeroBanner";
 
 const Home = () => {
   return (
-    <div>
-      {/* <Login /> */}
-      {/* <Register /> */}
-    </div>
+    <>
+      <HeroBanner />
+    </>
   );
 };
 

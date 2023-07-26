@@ -1,0 +1,74 @@
+.site-footer {
+  background: var(--black);
+  color: var(--white);
+  padding: 40px 0;
+  margin-top: 80px;
+}
+
+.site-footer h5 {
+  text-transform: capitalize;
+}
+
+.site-footer .newsletter {
+  padding-right: 20px;
+}
+
+.site-footer .newsletter input {
+  color: #fff;
+}
+
+.site-footer .newsletter label {
+  color: var(--theme-color);
+}
+
+.MuiInput-root:hover:before {
+  border-bottom: 2px solid #fff !important;
+}
+
+.MuiInput-root:before {
+  border-bottom: 1px solid #fff !important;
+}
+
+.newsletter form {
+  position: relative;
+}
+
+.newsletter form button[type="submit"] {
+  position: absolute;
+  bottom: 8px;
+  right: -8px;
+  padding: 10px !important;
+  min-width: unset;
+  background-color: transparent !important;
+  font-size: 20px;
+  color: #fff !important;
+}
+
+.footer-bottom li a,
+.footer-div li a {
+  color: var(--light-gray) !important;
+}
+
+.footer-bottom li a:hover,
+.footer-div li a:hover {
+  color: #fff !important;
+}
+
+.footer-div li:not(:last-child) {
+  margin-bottom: 5px;
+}
+
+.social-icons li a {
+  width: 24px;
+  height: 24px;
+  background-color: var(--theme-color);
+  border-radius: 5px;
+  padding: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.social-icons li svg {
+  color: #fff;
+}
