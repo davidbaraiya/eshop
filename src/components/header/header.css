@@ -83,6 +83,7 @@ li.dd-link>span {
   /* transform: translateY(20px) translateX(-50%); */
   text-transform: capitalize;
   visibility: hidden;
+  border-top: 2px solid var(--theme-color);
 }
 
 .dd-menu li {

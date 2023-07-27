@@ -5,6 +5,10 @@
   margin-top: 80px;
 }
 
+.site-footer .footer-row {
+  gap: 20px 0;
+}
+
 .site-footer h5 {
   text-transform: capitalize;
 }
@@ -15,10 +19,11 @@
 
 .site-footer .newsletter input {
   color: #fff;
+  padding-right: 45px;
 }
 
 .site-footer .newsletter label {
-  color: var(--theme-color);
+  color: var(--second-color);
 }
 
 .MuiInput-root:hover:before {
@@ -47,6 +52,7 @@
 .footer-bottom li a,
 .footer-div li a {
   color: var(--light-gray) !important;
+  text-transform: capitalize;
 }
 
 .footer-bottom li a:hover,
@@ -54,7 +60,7 @@
   color: #fff !important;
 }
 
-.footer-div li:not(:last-child) {
+.footer-div li:not(:last-child, .social-icons li) {
   margin-bottom: 5px;
 }
 

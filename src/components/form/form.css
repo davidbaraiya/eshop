@@ -26,6 +26,11 @@ p a {
   color: var(--theme-color);
 }
 
+p a:hover {
+  text-decoration: underline;
+  color: var(--theme-color);
+}
+
 @media (max-width:575px) {
   .input-form {
     max-width: calc(100% - 15px);

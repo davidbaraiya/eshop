@@ -16,13 +16,14 @@ import { AiOutlineCopyrightCircle } from "react-icons/ai";
 import { SlSocialInstagram, SlSocialTwitter } from "react-icons/sl";
 import { RiFacebookLine } from "react-icons/ri";
 import { PiGoogleLogoLight } from "react-icons/pi";
+import paymentMethods from "../../assets/images/payment-methods.png";
 
 const Footer = () => {
   return (
     <footer className="site-footer">
       <Container>
-        <Row>
-          <Col sm={12} md={6} lg={4}>
+        <Row className="footer-row">
+          <Col sm={12} md={3} lg={4}>
             <div className=" newsletter">
               <div className="logo-wrapper mb-2">
                 <Link to={"/"}>
@@ -46,7 +47,7 @@ const Footer = () => {
               </form>
             </div>
           </Col>
-          <Col sm={12} md={6} lg={2}>
+          <Col sm={4} md={3} lg={3}>
             <div className="footer-div">
               <h5>About</h5>
               <ul>
@@ -60,12 +61,14 @@ const Footer = () => {
                   <Link to={"#"}>123456789</Link>
                 </li>
                 <li>
-                  <Link to={"#"}>demo@gmail.com</Link>
+                  <Link to={"#"} className="text-lowercase">
+                    demo@gmail.com
+                  </Link>
                 </li>
               </ul>
             </div>
           </Col>
-          <Col sm={12} md={6} lg={2}>
+          <Col sm={4} md={3} lg={3}>
             <div className="footer-div">
               <h5>Help</h5>
               <ul>
@@ -81,7 +84,7 @@ const Footer = () => {
               </ul>
             </div>
           </Col>
-          <Col sm={12} md={6} lg={3}>
+          <Col sm={4} md={3} lg={2}>
             <div className="footer-div social-icons">
               <h5>social</h5>
               <ul className="d-flex gap-3 align-items-center">
@@ -108,11 +111,14 @@ const Footer = () => {
               </ul>
             </div>
           </Col>
+          <Col>
+            <img src={paymentMethods} alt="img" style={{ maxWidth: "300px" }} />
+          </Col>
         </Row>
         <Divider color="#fff" className="mb-4 mt-5" />
         <div className="footer-bottom d-flex justify-content-between align-items-center">
           <Typography>
-            <AiOutlineCopyrightCircle /> 2023 <Link to={"/"}>Eshop.com</Link>.
+            <AiOutlineCopyrightCircle /> 2023 <Link to={"/"}> Eshop.com. </Link>
             All rights reserved.
           </Typography>
           <ul className="d-flex gap-3 align-items-center">

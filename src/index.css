@@ -5,7 +5,8 @@
   --first-font: 'Jost', sans-serif;
   --second-font: 'Poppins', sans-serif;
   --third-font: 'Dancing Script', cursive;
-  --theme-color: #0f8fac;
+  --theme-color: #AF209A;
+  --second-color: #F2C94C;
   --light-bg-gray: #E1E6EA;
   --light-gray: #8d8d8d;
   --off-white: #dfdfdf;
@@ -77,6 +78,8 @@ ul, ol {
 
 button {
   color: inherit;
+  min-width: unset !important;
+  min-height: unset !important;
 }
 
 img {
@@ -116,7 +119,7 @@ h1 span, h2 span, h3 span, h4 span, h5 span, h6 span {
   color: var(--white) !important;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 8px;
   background: var(--light-bg-gray);
 }
@@ -128,7 +131,7 @@ h1 span, h2 span, h3 span, h4 span, h5 span, h6 span {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--theme-color);
-}
+} */
 
 .slick-dots li button:before {
   font-size: 14px !important;
@@ -139,6 +142,35 @@ h1 span, h2 span, h3 span, h4 span, h5 span, h6 span {
   color: var(--theme-color) !important;
 }
 
+.section-title {
+  margin-bottom: 30px;
+  max-width: max-content;
+  max-width: -moz-max-content;
+}
+
+.section-title h2 {
+  position: relative;
+  color: var(--theme-color);
+
+}
+
+.section-title h2::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -4px;
+  width: 40%;
+  height: 2px;
+  background-color: var(--theme-color);
+  display: block;
+}
+
+.section-title .subtitle {
+  margin-bottom: 5px;
+  line-height: 1;
+  display: inline-block;
+  color: var(--second-color);
+}
 
 
 
