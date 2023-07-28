@@ -46,7 +46,7 @@ const Home = () => {
                       <ProductSkeleton />
                     </Col>
                   ))
-                : allproductsData.slice(0, 8).map((product) => (
+                : allproductsData?.slice(0, 8).map((product) => (
                     <Col xs={12} sm={6} md={4} lg={3} key={product.id}>
                       <ProductCard product={product} />
                     </Col>

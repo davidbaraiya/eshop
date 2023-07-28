@@ -40,7 +40,7 @@ const ProductCard = ({ product }) => {
           </div>
         </CardContent>
         <CardActions className="justify-content-between">
-          <div className="price"> $ {price}</div>
+          <div className="price"> ${price}</div>
           <Button variant="contained" className="btn">
             Add To Cart
           </Button>

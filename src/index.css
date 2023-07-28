@@ -160,7 +160,6 @@ h1 span, h2 span, h3 span, h4 span, h5 span, h6 span {
 .section-title h2 {
   position: relative;
   color: var(--theme-color);
-
 }
 
 .section-title .inner-title::before {
@@ -182,7 +181,6 @@ h1 span, h2 span, h3 span, h4 span, h5 span, h6 span {
 }
 
 
-
 @media (max-width: 1200px) {
   :root {
     --h1: normal 600 38px/1.1 var(--first-font);
@@ -192,6 +190,16 @@ h1 span, h2 span, h3 span, h4 span, h5 span, h6 span {
   }
 }
 
+
+@media (max-width: 991px) {
+  .pt {
+    padding-top: 50px
+  }
+
+  .pb {
+    padding-bottom: 50px
+  }
+}
 
 @media (max-width: 767px) {
   :root {
@@ -203,13 +211,7 @@ h1 span, h2 span, h3 span, h4 span, h5 span, h6 span {
     --h6: normal 600 16px/1.1 var(--first-font)
   }
 
-  .pt {
-    padding-top: 50px
-  }
 
-  .pb {
-    padding-bottom: 50px
-  }
 }
 
 @media (max-width: 500px) {
