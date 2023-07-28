@@ -32,7 +32,7 @@ const HeroBanner = () => {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 600,
+    speed: 1000,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
@@ -42,6 +42,28 @@ const HeroBanner = () => {
     <HeroBannerSection>
       <div className="hero-banner">
         <Slider {...settings}>
+          <div className="banner-slide">
+            <div className="banner-slide-inner">
+              <div className="content">
+                <div className="subtitle">
+                  get <span>50% off</span>
+                </div>
+                <h2>
+                  Summer <span> Fashion Sale</span>
+                </h2>
+                <Typography>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                  Accusamus at quam dicta, voluptatum quia asperiores omnis ab.
+                  Hic, commodi officia?
+                </Typography>
+                <Button variant="contained" className="btn">
+                  <Link to="/collection">Shop Now</Link>
+                </Button>
+              </div>
+
+              <img src={banner2} alt="banner img" width={100} loading="lazy" />
+            </div>
+          </div>
           <div className="banner-slide">
             <div className="banner-slide-inner">
               <div
@@ -65,30 +87,7 @@ const HeroBanner = () => {
                   <Link to="/collection">Shop Now</Link>
                 </Button>
               </div>
-
               <img src={banner1} alt="banner img" width={100} loading="lazy" />
-            </div>
-          </div>
-          <div className="banner-slide">
-            <div className="banner-slide-inner">
-              <div className="content">
-                <div className="subtitle">
-                  get <span>50% off</span>
-                </div>
-                <h2>
-                  Summer <span> Fashion Sale</span>
-                </h2>
-                <Typography>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Accusamus at quam dicta, voluptatum quia asperiores omnis ab.
-                  Hic, commodi officia?
-                </Typography>
-                <Button variant="contained" className="btn">
-                  <Link to="/collection">Shop Now</Link>
-                </Button>
-              </div>
-
-              <img src={banner2} alt="banner img" width={100} loading="lazy" />
             </div>
           </div>
         </Slider>
@@ -108,6 +107,17 @@ const HeroBannerSection = styled.section`
     width: 100%;
     overflow-x: hidden;
 
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 400px;
+      height: 100%;
+      background-color: var(--second-color);
+      z-index: 1;
+      clip-path: polygon(0 0%, 61% 0, 100% 100%, 0% 100%);
+    }
     img {
       position: absolute;
       left: 0;

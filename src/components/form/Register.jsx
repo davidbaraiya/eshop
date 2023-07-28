@@ -48,7 +48,7 @@ const Register = ({ handleModalFun, signinWithGoogle, signinWithFacebook }) => {
     try {
       if (registerData.name || registerData.email || registerData.password) {
         if (isChecked) {
-          const user = await createUserWithEmailAndPassword(
+          await createUserWithEmailAndPassword(
             auth,
             registerData.email,
             registerData.password

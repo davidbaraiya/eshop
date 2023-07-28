@@ -31,6 +31,7 @@ import {
 import { auth } from "../../firebase/firebase";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
+import logo from "../../assets/images/logo.png";
 
 const UlContainer = {
   hidden: { opacity: 1, scale: 0 },
@@ -148,7 +149,7 @@ const Header = () => {
           <CustomToolbar>
             <div className="logo-wrapper">
               <Link to={"/"}>
-                <Typography variant="h4">Eshop</Typography>
+                <img src={logo} alt="logo" />
               </Link>
             </div>
             <nav className=" d-flex gap-3 w-100 justify-content-end">

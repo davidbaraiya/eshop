@@ -17,6 +17,7 @@ import { SlSocialInstagram, SlSocialTwitter } from "react-icons/sl";
 import { RiFacebookLine } from "react-icons/ri";
 import { PiGoogleLogoLight } from "react-icons/pi";
 import paymentMethods from "../../assets/images/payment-methods.png";
+import logo from "../../assets/images/logo.png";
 
 const Footer = () => {
   return (
@@ -27,7 +28,7 @@ const Footer = () => {
             <div className=" newsletter">
               <div className="logo-wrapper mb-2">
                 <Link to={"/"}>
-                  <Typography variant="h4">Eshop</Typography>
+                  <img src={logo} alt="logo" />
                 </Link>
               </div>
               <Typography>subscribe for more info and offers</Typography>
