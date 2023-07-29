@@ -32,6 +32,8 @@ import { auth } from "../../firebase/firebase";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 import logo from "../../assets/images/logo.png";
+import { useSelector } from "react-redux";
+import userProfile from "../../assets/images/user-profile.jpg";
 
 const UlContainer = {
   hidden: { opacity: 1, scale: 0 },
@@ -85,6 +87,10 @@ const Header = () => {
     loginShow: false,
   });
   const [state, setState] = useState(false);
+
+  // get cart  and wishlist product Quantity
+  const { inCartProducts } = useSelector((state) => state.inCartProducts);
+  const { wishlistProducts } = useSelector((state) => state.wishlistProducts);
 
   const signinWithGoogle = () => {
     signInWithPopup(auth, googleProvider);
@@ -165,56 +171,64 @@ const Header = () => {
                   <CiSearch />
                 </li>
                 <li>
-                  <Badge badgeContent={1} color="primary">
-                    <CiHeart />
-                  </Badge>
+                  <Link to={"/wishlist"}>
+                    <Badge
+                      badgeContent={wishlistProducts.length}
+                      color="primary"
+                    >
+                      <CiHeart />
+                    </Badge>
+                  </Link>
                 </li>
                 <li>
-                  <Badge badgeContent={1} color="primary">
-                    <CiShoppingCart />
-                  </Badge>
+                  <Link to={"/cart"}>
+                    <Badge badgeContent={inCartProducts.length} color="primary">
+                      <CiShoppingCart />
+                    </Badge>
+                  </Link>
                 </li>
                 <li className="dd-link">
-                  <span>
-                    <CiUser />
-                  </span>
                   {userIsLogin ? (
-                    <List className="dd-menu">
-                      <ListItem>
-                        <ListItemButton
-                          onClick={() => handleModalOpen("login")}
-                        >
-                          My Profile
-                        </ListItemButton>
-                      </ListItem>
-                      <ListItem>
-                        <ListItemButton onClick={userLogout}>
-                          My Order
-                        </ListItemButton>
-                      </ListItem>
-                      <ListItem>
-                        <ListItemButton onClick={userLogout}>
-                          Sign Out
-                        </ListItemButton>
-                      </ListItem>
-                    </List>
+                    <>
+                      <span className="user-profile">
+                        <img src={userProfile} alt="user profile pic" />
+                      </span>
+                      <List className="dd-menu">
+                        <ListItem>
+                          <ListItemButton>My Profile</ListItemButton>
+                        </ListItem>
+                        <ListItem>
+                          <ListItemButton>My Order</ListItemButton>
+                        </ListItem>
+                        <ListItem>
+                          <ListItemButton onClick={userLogout}>
+                            Sign Out
+                          </ListItemButton>
+                        </ListItem>
+                      </List>
+                    </>
                   ) : (
-                    <List className="dd-menu">
-                      <ListItem>
-                        <ListItemButton
-                          onClick={() => handleModalOpen("login")}
-                        >
-                          Log In
-                        </ListItemButton>
-                      </ListItem>
-                      <ListItem>
-                        <ListItemButton
-                          onClick={() => handleModalOpen("register")}
-                        >
-                          Register
-                        </ListItemButton>
-                      </ListItem>
-                    </List>
+                    <>
+                      <span>
+                        <CiUser />
+                      </span>
+                      <List className="dd-menu">
+                        <ListItem>
+                          <ListItemButton
+                            onClick={() => handleModalOpen("login")}
+                          >
+                            Log In
+                          </ListItemButton>
+                        </ListItem>
+                        <ListItem>
+                          <ListItemButton
+                            onClick={() => handleModalOpen("register")}
+                          >
+                            Register
+                          </ListItemButton>
+                        </ListItem>
+                      </List>
+                    </>
                   )}
                 </li>
                 <li className="menu-icon">

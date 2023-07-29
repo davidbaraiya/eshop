@@ -5,6 +5,11 @@
   margin-top: 80px;
 }
 
+.site-footer .logo-wrapper {
+  max-width: 120px;
+  width: 100%;
+}
+
 .site-footer .footer-row {
   gap: 20px 0;
 }
@@ -26,11 +31,11 @@
   color: var(--second-color);
 }
 
-.MuiInput-root:hover:before {
+.site-footer .MuiInput-root:hover:before {
   border-bottom: 2px solid #fff !important;
 }
 
-.MuiInput-root:before {
+.site-footer .MuiInput-root:before {
   border-bottom: 1px solid #fff !important;
 }
 

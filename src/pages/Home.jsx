@@ -5,7 +5,7 @@ import { Col, Row } from "react-bootstrap";
 import ProductCard from "../components/product-card/ProductCard";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProductData } from "../redux/features/products/productsSlice";
+import { fetchProductData } from "../redux/features/products/fetchProductsSlice";
 import ProductSkeleton from "../components/product-card/ProductSkeleton";
 
 const Home = () => {

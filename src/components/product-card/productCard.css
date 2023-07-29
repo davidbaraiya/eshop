@@ -48,11 +48,6 @@
   text-overflow: ellipsis;
 }
 
-.product-card .product-inner .price {
-  font-size: 18px;
-  font-weight: 600;
-}
-
 .product-card .img-wrapper {
   position: relative;
   padding-top: 150px;
