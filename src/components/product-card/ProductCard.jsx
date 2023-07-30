@@ -7,7 +7,7 @@ import {
   Rating,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { GoHeart, GoHeartFill } from "react-icons/go";
 import { useDispatch } from "react-redux";
@@ -20,14 +20,18 @@ import { auth } from "../../firebase/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { toast } from "react-toastify";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, inWishlist }) => {
   const [wishlistIcon, setWishlistIcon] = useState(false);
   const { id, image, price, rating, title } = product;
   const dispatch = useDispatch();
 
-  // check user is log in or not
-  // const
+  useEffect(() => {
+    if (inWishlist) {
+      setWishlistIcon(!wishlistIcon);
+    }
+  }, [inWishlist]);
 
+  // check user is log in or not
   const handleWishlist = (wishlistProduct) => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -50,7 +54,7 @@ const ProductCard = ({ product }) => {
         <div className="product-topbar">
           <span>new</span>
           <Button onClick={() => handleWishlist(product)}>
-            {wishlistIcon ? <GoHeartFill /> : <GoHeart />}
+            {wishlistIcon || inWishlist ? <GoHeartFill /> : <GoHeart />}
           </Button>
         </div>
         <Link to={"#"} className="img-wrapper">

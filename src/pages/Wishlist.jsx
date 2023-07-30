@@ -26,13 +26,24 @@ const Wishlist = () => {
           </div>
         </div>
         <div className="wishlist-container">
-          <Row>
-            {wishlistProducts?.map((product) => (
-              <Col sm={12} md={4} lg={3} key={product.id}>
-                <ProductCard product={product} />
-              </Col>
-            ))}
-          </Row>
+          {wishlistProducts.length === 0 ? (
+            <div className="empty-cart-container">
+              <div>
+                <h2>No Favorite Items Available</h2>
+                <Button variant="contained" className="mt-4">
+                  <Link to="/">Go To Shop</Link>
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <Row>
+              {wishlistProducts?.map((product) => (
+                <Col sm={12} md={4} lg={3} key={product.id}>
+                  <ProductCard product={product} inWishlist={true} />
+                </Col>
+              ))}
+            </Row>
+          )}
         </div>
       </Container>
     </ViewWishlist>

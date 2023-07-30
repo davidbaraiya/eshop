@@ -63,7 +63,7 @@ const Footer = () => {
                 </li>
                 <li>
                   <Link to={"#"} className="text-lowercase">
-                    demo@gmail.com
+                    eshop@company.com
                   </Link>
                 </li>
               </ul>

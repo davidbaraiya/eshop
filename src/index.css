@@ -134,6 +134,7 @@ h1 span, h2 span, h3 span, h4 span, h5 span, h6 span {
 .price {
   font-size: 18px;
   font-weight: 600;
+  line-height: 1;
 }
 
 /* ::-webkit-scrollbar {

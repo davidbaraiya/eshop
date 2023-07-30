@@ -36,8 +36,43 @@ const addToCart = createSlice({
         JSON.stringify(state.inCartProducts)
       );
     },
+    incrementQuantity: (state, action) => {
+      const newItemId = action.payload;
+      const itemToUpdateInc = state.inCartProducts.find(
+        (item) => item.id === newItemId
+      );
+
+      if (itemToUpdateInc) {
+        itemToUpdateInc.quantity = (itemToUpdateInc.quantity || 1) + 1;
+      }
+      localStorage.setItem(
+        "ProductIncart",
+        JSON.stringify(state.inCartProducts)
+      );
+    },
+
+    decrementQuantity: (state, action) => {
+      const newItemId = action.payload;
+      const itemToUpdateDec = state.inCartProducts.find(
+        (item) => item.id === newItemId
+      );
+      if (itemToUpdateDec) {
+        if (itemToUpdateDec.quantity > 1) {
+          itemToUpdateDec.quantity = itemToUpdateDec.quantity - 1;
+        }
+      }
+      localStorage.setItem(
+        "ProductIncart",
+        JSON.stringify(state.inCartProducts)
+      );
+    },
   },
 });
 
-export const { addToCartFun, removeToCartFun } = addToCart.actions;
+export const {
+  addToCartFun,
+  removeToCartFun,
+  incrementQuantity,
+  decrementQuantity,
+} = addToCart.actions;
 export default addToCart.reducer;

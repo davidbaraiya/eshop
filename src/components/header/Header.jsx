@@ -202,7 +202,7 @@ const Header = () => {
                         </ListItem>
                         <ListItem>
                           <ListItemButton onClick={userLogout}>
-                            Sign Out
+                            Log Out
                           </ListItemButton>
                         </ListItem>
                       </List>

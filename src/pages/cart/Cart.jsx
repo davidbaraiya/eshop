@@ -18,9 +18,9 @@ const Cart = () => {
   const { loading, inCartProducts, error } = useSelector(
     (state) => state.inCartProducts
   );
-
   const dispatch = useDispatch();
 
+  // checkout handle
   const handleCheckout = () => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -31,6 +31,30 @@ const Cart = () => {
     });
   };
 
+  // Sub Total Price
+  const subTotal = inCartProducts.reduce((total, product) => {
+    total += product.price * (product.quantity ? product.quantity : 1);
+    return total;
+  }, 0);
+
+  // Tax Price
+  const taxPercentage = 6.25;
+  const TaxPrice = (subTotal * 6.25) / 100;
+
+  // Delivery Charge
+  const deliveryCharge = subTotal > 100 ? "free" : 30;
+
+  // Total Price
+  const TotalPrice =
+    subTotal + TaxPrice + (deliveryCharge !== "free" ? deliveryCharge : null);
+
+  // Total Items
+  const TotalItems = inCartProducts.reduce((totalItems, product) => {
+    totalItems += product.quantity;
+    return totalItems;
+  }, 0);
+
+  // error handle
   if (error) {
     <div>
       <Typography>Error : {error.message}</Typography>
@@ -70,23 +94,34 @@ const Cart = () => {
               <Col sm={12} md={8}>
                 <div className="main-cart-inner">
                   {inCartProducts?.map((product) => {
-                    const { id, title, image, price } = product;
+                    const { id, title, image, price, quantity } = product;
                     return (
                       <div className="cart" key={id}>
-                        <div className="img-wrapper">
-                          <img src={image} alt="product img" />
+                        <div className="left-side">
+                          <div className="img-wrapper">
+                            <img src={image} alt="product img" />
+                          </div>
+                          <div className="detail-content">
+                            <h6>{title}</h6>
+                            <div className="price mb-3">$ {price}</div>
+                            <Quantity product={product} />
+                          </div>
                         </div>
-                        <div className="right-content">
-                          <h6>{title}</h6>
-                          <div className="price mb-3">$ {price}</div>
-                          <Quantity />
+                        <div className="d-flex gap-3 align-items-center align-self-start">
+                          <div className="price">
+                            ${quantity ? price * quantity : price}
+                          </div>
+                          <Button onClick={() => dispatch(removeToCartFun(id))}>
+                            <AiOutlineDelete size={25} />
+                          </Button>
                         </div>
-                        <Button onClick={() => dispatch(removeToCartFun(id))}>
-                          <AiOutlineDelete size={25} />
-                        </Button>
                       </div>
                     );
                   })}
+                  <div className="bottom-info">
+                    <div>total items : {TotalItems}</div>
+                    <div>sub total : {`$ ${subTotal.toFixed(2)}`}</div>
+                  </div>
                 </div>
               </Col>
               <Col sm={12} md={4}>
@@ -95,20 +130,34 @@ const Cart = () => {
                   <div className="mt-3">
                     <div className="price-info">
                       <label htmlFor="">Sub Total: </label>
-                      <span> $ 2000 </span>
+                      <span> $ {subTotal.toFixed(2)} </span>
                     </div>
                     <div className="price-info">
-                      <label htmlFor="">Tax (3.00%):</label>
-                      <span> $ 10 </span>
+                      <label htmlFor="">Tax ({taxPercentage}%):</label>
+                      <span> $ {TaxPrice.toFixed(2)}</span>
                     </div>
                     <div className="price-info">
-                      <label htmlFor="">Delivery Charges:</label>
-                      <span> $ 30 </span>
+                      <label htmlFor="">
+                        Delivery Charges:{" "}
+                        <span
+                          className="d-block text-secondary"
+                          style={{ fontSize: "11px" }}
+                        >
+                          free when $100 above
+                        </span>
+                      </label>
+                      <span>
+                        {deliveryCharge === "free" ? (
+                          <span className="text-success">Free *</span>
+                        ) : (
+                          "$" + deliveryCharge
+                        )}
+                      </span>
                     </div>
                   </div>
                   <div className="price-info total">
                     <label htmlFor="">Total:</label>
-                    <span> $ 2050 </span>
+                    <span> $ {TotalPrice.toFixed(2)} </span>
                   </div>
                   <Button
                     variant="contained"
