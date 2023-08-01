@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import HeroBanner from "../components/HeroBanner";
-import { Button, Container } from "@mui/material";
+import { Container } from "@mui/material";
 import { Col, Row } from "react-bootstrap";
 import ProductCard from "../components/product-card/ProductCard";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductData } from "../redux/features/products/fetchProductsSlice";
 import ProductSkeleton from "../components/product-card/ProductSkeleton";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const { allproductsData, loading, error } = useSelector(
@@ -34,10 +35,10 @@ const Home = () => {
                 <span className="subtitle">new</span>
                 <h2>Collection</h2>
               </div>
-              <Button className="d-flex gap-2">
+              <Link to="/product-filter" className="d-flex gap-2">
                 Show More
                 <AiOutlineArrowRight />
-              </Button>
+              </Link>
             </div>
             <Row className="row-gap">
               {loading

@@ -27,7 +27,7 @@ const ProductCard = ({ product, inWishlist }) => {
 
   useEffect(() => {
     if (inWishlist) {
-      setWishlistIcon(!wishlistIcon);
+      setWishlistIcon((prevWishlistIcon) => !prevWishlistIcon);
     }
   }, [inWishlist]);
 
@@ -57,12 +57,12 @@ const ProductCard = ({ product, inWishlist }) => {
             {wishlistIcon || inWishlist ? <GoHeartFill /> : <GoHeart />}
           </Button>
         </div>
-        <Link to={"#"} className="img-wrapper">
+        <Link to={`/product/${id}`} className="img-wrapper">
           <img src={image} alt="product img" />
         </Link>
         <CardContent>
           <Typography gutterBottom component="div" className="product-title">
-            <Link to={"#"}>{title}</Link>
+            <Link to={`/product/${id}`}>{title}</Link>
           </Typography>
           <div className="rating d-flex align-items-center gap-2">
             <Rating

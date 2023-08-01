@@ -114,7 +114,7 @@ const Header = () => {
   const userLogout = async () => {
     try {
       await signOut(auth);
-      toast.success("Signout Successfully");
+      toast.success("Logout Successfully");
       setUserIsLogin(false);
     } catch (error) {
       toast.error(error.message);

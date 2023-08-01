@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./cart.css";
 import { Button, Container, Typography } from "@mui/material";
 import { MdArrowBackIos } from "react-icons/md";
@@ -49,11 +49,12 @@ const Cart = () => {
     subTotal + TaxPrice + (deliveryCharge !== "free" ? deliveryCharge : null);
 
   // Total Items
-  const TotalItems = inCartProducts.reduce((totalItems, product) => {
+  const totalItems = inCartProducts.reduce((totalItems, product) => {
     totalItems += product.quantity;
-    return totalItems;
+    return Number(totalItems);
   }, 0);
 
+  console.log(totalItems);
   // error handle
   if (error) {
     <div>
@@ -98,11 +99,13 @@ const Cart = () => {
                     return (
                       <div className="cart" key={id}>
                         <div className="left-side">
-                          <div className="img-wrapper">
+                          <Link to={`/product/${id}`} className="img-wrapper">
                             <img src={image} alt="product img" />
-                          </div>
+                          </Link>
                           <div className="detail-content">
-                            <h6>{title}</h6>
+                            <h6>
+                              <Link to={`/product/${id}`}>{title}</Link>
+                            </h6>
                             <div className="price mb-3">$ {price}</div>
                             <Quantity product={product} />
                           </div>
@@ -119,7 +122,7 @@ const Cart = () => {
                     );
                   })}
                   <div className="bottom-info">
-                    <div>total items : {TotalItems}</div>
+                    <div>total items : {totalItems}</div>
                     <div>sub total : {`$ ${subTotal.toFixed(2)}`}</div>
                   </div>
                 </div>
