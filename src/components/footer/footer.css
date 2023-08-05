@@ -54,6 +54,12 @@
   color: #fff !important;
 }
 
+.footer-bottom {
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+
 .footer-bottom li a,
 .footer-div li a {
   color: var(--light-gray) !important;
@@ -82,4 +88,12 @@
 
 .social-icons li svg {
   color: #fff;
+}
+
+
+@media (max-width:576px) {
+  .footer-bottom {
+    text-align: center;
+    justify-content: center !important;
+  }
 }

@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Container,
   FormControl,
+  FormControlLabel,
   MenuItem,
+  Radio,
+  RadioGroup,
   Select,
   Slider,
 } from "@mui/material";
@@ -11,45 +14,89 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { MdArrowBackIos } from "react-icons/md";
 import { Col, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import ProductCard from "../components/product-card/ProductCard";
 import ProductSkeleton from "../components/product-card/ProductSkeleton";
-import { fetchProductData } from "../redux/features/products/fetchProductsSlice";
 import { CiGrid2H, CiGrid41 } from "react-icons/ci";
 
-function valuetext(value) {
-  return `${value}°C`;
-}
 const minDistance = 10;
 
 const ProductsFilter = () => {
-  const [age, setAge] = useState("");
-  const [value1, setValue1] = React.useState([20, 37]);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchProductData());
-  }, [dispatch]);
-
   const { allproductsData, loading, error } = useSelector(
     (state) => state.products
   );
 
+  const allProductPrice = allproductsData.map((item) => item.price);
+  const minPrice =
+    allProductPrice.length > 0 ? Math.floor(Math.min(...allProductPrice)) : 0;
+  const maxPrice =
+    allProductPrice.length > 0 ? Math.ceil(Math.max(...allProductPrice)) : 1000;
+
+  // states
+  const [loadmore, setLoadMore] = useState(9);
+  const [age, setAge] = useState("");
+  const [pricerange, setPricerange] = useState([minPrice, maxPrice]);
+  const [products, setProducts] = useState(
+    allProductPrice ? allproductsData : []
+  );
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [horizontalGrid, setHorizontalGrid] = useState(false);
+
+  // get all category
+  const categories = [
+    "All",
+    ...new Set(allproductsData.map((item) => item.category)),
+  ];
+
+  // handle Categories
+  const handleCategories = (category) => {
+    const filterBYCategory = allproductsData.filter(
+      (item) => item.category === category
+    );
+    setProducts(filterBYCategory);
+    if (category === "All") {
+      setProducts(allproductsData);
+    }
+    setSelectedCategory(category);
+  };
+
+  // filter product by price range
+  const handleFilterProductByPrice = ([min, max]) => {
+    console.log(selectedCategory);
+    const filterProductByPrice = allproductsData.filter(
+      (item) =>
+        item.price >= min &&
+        item.price <= max &&
+        item.category === selectedCategory
+    );
+    setProducts(filterProductByPrice);
+  };
+
   // handelrange
-  const handleChange1 = (event, newValue, activeThumb) => {
+  const handlePriceRange = (event, newValue, activeThumb) => {
     if (!Array.isArray(newValue)) {
       return;
     }
-
     if (activeThumb === 0) {
-      setValue1([Math.min(newValue[0], value1[1] - minDistance), value1[1]]);
+      setPricerange([
+        Math.min(newValue[0], pricerange[1] - minDistance),
+        pricerange[1],
+      ]);
     } else {
-      setValue1([value1[0], Math.max(newValue[1], value1[0] + minDistance)]);
+      setPricerange([
+        pricerange[0],
+        Math.max(newValue[1], pricerange[0] + minDistance),
+      ]);
     }
+    handleFilterProductByPrice(newValue);
   };
 
+  // handle Load More
+  const handleLoadMore = () => setLoadMore((preValue) => preValue + 6);
+
+  // is error
   if (error) {
-    <div>{error.message}</div>;
+    return <div>{error.message}</div>;
   }
 
   const handleChange = (event) => {
@@ -75,45 +122,95 @@ const ProductsFilter = () => {
           <Col sm={12} md={3}>
             <div className="leftbar-filter">
               <h5>Filter</h5>
+              <div className="filter-div mt-3 radio-grp">
+                <label>category</label>
+                <FormControl>
+                  <RadioGroup
+                    aria-labelledby="products-category"
+                    defaultValue="All"
+                  >
+                    {categories?.map((category, i) => (
+                      <FormControlLabel
+                        key={i}
+                        value={category}
+                        control={
+                          <Radio
+                            className="custom-radio"
+                            onChange={() => handleCategories(category)}
+                          />
+                        }
+                        label={category}
+                        sx={{
+                          color: "#222 !important",
+                        }}
+                      />
+                    ))}
+                  </RadioGroup>
+                </FormControl>
+              </div>
               <div className="filter-div mt-3">
-                <label>price</label>
+                <label>price range</label>
+                <div className="d-flex gap-2 mb-4 justify-content-between">
+                  <div className="d-flex gap-2">
+                    <span>Min</span>
+                    <div>{pricerange[0]}</div>
+                  </div>
+                  <span>-</span>
+                  <div className="d-flex gap-2">
+                    <span>Max</span>
+                    <div>{pricerange[1]}</div>
+                  </div>
+                </div>
                 <Slider
                   getAriaLabel={() => "Minimum distance"}
-                  value={value1}
-                  onChange={handleChange1}
+                  value={pricerange}
+                  onChange={handlePriceRange}
                   valueLabelDisplay="auto"
-                  getAriaValueText={valuetext}
                   disableSwap
+                  min={minPrice}
+                  max={maxPrice}
                 />
+              </div>
+              <div className="filter-div mt-3">
+                <label>rating</label>
+                <div>*</div>
+                <div>**</div>
+                <div>***</div>
+                <div>****</div>
+                <div>*****</div>
+              </div>
+              <div className="text-center mt-4">
+                <Button variant="contained" color="secondary" className="w-100">
+                  Clear Filter
+                </Button>
               </div>
             </div>
           </Col>
           <Col sm={12} md={9}>
             <div className="rightbar">
-              <div className="topbar d-flex  align-items-center justify-content-between ">
+              <div className="topbar d-flex align-items-center justify-content-between ">
                 <div className="d-flex gap-3">
                   <div>
-                    <Button>
+                    <Button onClick={() => setHorizontalGrid(false)}>
                       <CiGrid41 fontSize={24} />
                     </Button>
-                    <Button className="ms-1">
+                    <Button
+                      className="ms-1"
+                      onClick={() => setHorizontalGrid(true)}
+                    >
                       <CiGrid2H fontSize={24} />
                     </Button>
                   </div>
                 </div>
-                <FormControl
-                  // variant="standard"
-                  size="small"
-                  sx={{ m: 1, minWidth: 120 }}
-                >
+                <FormControl size="small" sx={{ m: 1, minWidth: 120 }}>
                   <Select
                     value={age}
                     onChange={handleChange}
                     displayEmpty
-                    // inputProps={{ "aria-label": "Without label" }}
+                    inputProps={{ "aria-label": "Without label" }}
                   >
                     <MenuItem value="">
-                      <em>Filter</em>
+                      <span>Sort</span>
                     </MenuItem>
                     <MenuItem value={10}>Ten</MenuItem>
                     <MenuItem value={20}>Twenty</MenuItem>
@@ -121,19 +218,59 @@ const ProductsFilter = () => {
                   </Select>
                 </FormControl>
               </div>
-              <Row className="row-gap">
-                {loading
-                  ? Array.from({ length: 8 }).map((_, index) => (
-                      <Col xs={12} sm={12} md={6} lg={4} key={index}>
-                        <ProductSkeleton />
-                      </Col>
-                    ))
-                  : allproductsData?.map((product) => (
-                      <Col xs={12} sm={12} md={6} lg={4} key={product.id}>
-                        <ProductCard product={product} />
-                      </Col>
-                    ))}
-              </Row>
+              {horizontalGrid ? (
+                <Row>
+                  {loading
+                    ? Array.from({ length: 9 }).map((_, index) => (
+                        <Col xs={12} key={index}>
+                          <ProductSkeleton />
+                        </Col>
+                      ))
+                    : products.slice(0, loadmore).map((product) => (
+                        <Col xs={12} key={product.id}>
+                          <ProductCard product={product} />
+                        </Col>
+                      ))}
+                  {products.length >= loadmore && (
+                    <div className="d-flex justify-content-center">
+                      <Button
+                        onClick={handleLoadMore}
+                        variant="contained"
+                        color="secondary"
+                        className="load-more-btn"
+                      >
+                        Load More
+                      </Button>
+                    </div>
+                  )}
+                </Row>
+              ) : (
+                <Row className="row-gap">
+                  {loading
+                    ? Array.from({ length: 9 }).map((_, index) => (
+                        <Col xs={12} sm={12} md={6} lg={4} key={index}>
+                          <ProductSkeleton />
+                        </Col>
+                      ))
+                    : products.slice(0, loadmore).map((product) => (
+                        <Col xs={12} sm={12} md={6} lg={4} key={product.id}>
+                          <ProductCard product={product} />
+                        </Col>
+                      ))}
+                  {products.length >= loadmore && (
+                    <div className="d-flex justify-content-center">
+                      <Button
+                        onClick={handleLoadMore}
+                        variant="contained"
+                        color="secondary"
+                        className="load-more-btn"
+                      >
+                        Load More
+                      </Button>
+                    </div>
+                  )}
+                </Row>
+              )}
             </div>
           </Col>
         </Row>
@@ -164,7 +301,19 @@ const FilterSection = styled.section`
         display: block;
         margin-bottom: 15px;
         text-transform: capitalize;
+        color: var(--theme-color);
+        font-weight: 600;
       }
+    }
+    .radio-grp label span input + span {
+      display: none;
+    }
+    .radio-grp label span input + span {
+      display: none;
+    }
+    .Mui-checked + span {
+      color: var(--second-color) !important;
+      text-decoration: underline;
     }
   }
 `;

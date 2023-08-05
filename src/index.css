@@ -224,8 +224,6 @@ h1 span, h2 span, h3 span, h4 span, h5 span, h6 span {
     --h5: normal 600 18px/1.1 var(--first-font);
     --h6: normal 600 16px/1.1 var(--first-font)
   }
-
-
 }
 
 @media (max-width: 500px) {

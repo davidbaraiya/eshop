@@ -19,6 +19,8 @@ const SingleProduct = () => {
 
   useEffect(() => {
     dispatch(fetchSingleProduct(id));
+
+    window.scrollTo(0, 0);
   }, [id, dispatch]);
 
   if (singleError) {
