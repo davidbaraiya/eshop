@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -14,14 +14,22 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { MdArrowBackIos } from "react-icons/md";
 import { Col, Row } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ProductCard from "../components/product-card/ProductCard";
 import ProductSkeleton from "../components/product-card/ProductSkeleton";
 import { CiGrid2H, CiGrid41 } from "react-icons/ci";
+import { fetchProductData } from "../redux/features/products/fetchProductsSlice";
+import Loader from "../components/Loader";
 
 const minDistance = 10;
 
 const ProductsFilter = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProductData());
+  }, [dispatch]);
+
   const { allproductsData, loading, error } = useSelector(
     (state) => state.products
   );
@@ -36,11 +44,15 @@ const ProductsFilter = () => {
   const [loadmore, setLoadMore] = useState(9);
   const [age, setAge] = useState("");
   const [pricerange, setPricerange] = useState([minPrice, maxPrice]);
-  const [products, setProducts] = useState(
-    allProductPrice ? allproductsData : []
-  );
+  const [products, setProducts] = useState(allproductsData || []);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [horizontalGrid, setHorizontalGrid] = useState(false);
+
+  useEffect(() => {
+    if (allproductsData.length > 0) {
+      setProducts(allproductsData);
+    }
+  }, [allproductsData]);
 
   // get all category
   const categories = [
@@ -62,13 +74,17 @@ const ProductsFilter = () => {
 
   // filter product by price range
   const handleFilterProductByPrice = ([min, max]) => {
-    console.log(selectedCategory);
-    const filterProductByPrice = allproductsData.filter(
-      (item) =>
-        item.price >= min &&
-        item.price <= max &&
-        item.category === selectedCategory
-    );
+    const filterProductByPrice = allproductsData.filter((item) => {
+      if (selectedCategory === "All") {
+        return item.price >= min && item.price <= max;
+      } else {
+        return (
+          item.price >= min &&
+          item.price <= max &&
+          item.category === selectedCategory
+        );
+      }
+    });
     setProducts(filterProductByPrice);
   };
 
@@ -94,6 +110,10 @@ const ProductsFilter = () => {
   // handle Load More
   const handleLoadMore = () => setLoadMore((preValue) => preValue + 6);
 
+  // is loading
+  if (loading) {
+    return <Loader />;
+  }
   // is error
   if (error) {
     return <div>{error.message}</div>;
